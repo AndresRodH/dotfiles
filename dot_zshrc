@@ -17,6 +17,7 @@ alias ld='lazydocker'
 alias lg='lazygit'
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias vim='nvim'
+alias v='NVIM_APPNAME="kickstart-nvim" nvim'
 alias zshreload='source ~/.zshrc'
 alias gitprune="git for-each-ref --format '%(refname:short)' refs/heads | grep -v "master\|main" | xargs git branch -D"
 
