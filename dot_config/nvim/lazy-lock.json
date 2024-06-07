@@ -1,7 +1,6 @@
 {
   "CopilotChat.nvim": { "branch": "canary", "commit": "82923efe22b604cf9c0cad0bb2a74aa9247755ab" },
   "LazyVim": { "branch": "main", "commit": "ad092e96f9100f0471905316dc412620945cf1e5" },
-  "LuaSnip": { "branch": "master", "commit": "50fcf17db7c75af80e6b6109acfbfb4504768780" },
   "SchemaStore.nvim": { "branch": "main", "commit": "d9fd6651b47b68bfc1b952f81a0fdded3cb205b2" },
   "bufferline.nvim": { "branch": "main", "commit": "99337f63f0a3c3ab9519f3d1da7618ca4f91cffe" },
   "catppuccin": { "branch": "main", "commit": "5215ea59df6d0a7e27da9a5cd1165e06d1b04cbe" },
@@ -52,6 +51,7 @@
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "34867c69838078df7d6919b130c0541c0b400c47" },
   "nvim-ts-autotag": { "branch": "main", "commit": "6eb4120a1aadef07ac312f1c4bc6456712220007" },
   "nvim-web-devicons": { "branch": "master", "commit": "b4b302d6ae229f67df7a87ef69fa79473fe788a9" },
+  "octo.nvim": { "branch": "master", "commit": "5646539320cd62af6ff28f48ec92aeb724c68e18" },
   "oil.nvim": { "branch": "master", "commit": "e5312c3a801e7274fa14e6a56aa10a618fed80c3" },
   "persistence.nvim": { "branch": "main", "commit": "5fe077056c821aab41f87650bd6e1c48cd7dd047" },
   "plenary.nvim": { "branch": "master", "commit": "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" },
