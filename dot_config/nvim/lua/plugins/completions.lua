@@ -11,6 +11,11 @@ return {
 
 			local cmp = require("cmp")
 
+			opts.window = {
+				completion = cmp.config.window.bordered(),
+				documentation = cmp.config.window.bordered(),
+			}
+
 			opts.mapping = vim.tbl_extend("force", opts.mapping, {
 				-- require an explicit selection to confirm completion
 				["<CR>"] = cmp.mapping.confirm({ select = false }),
