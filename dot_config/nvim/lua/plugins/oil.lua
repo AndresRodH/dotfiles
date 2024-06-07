@@ -12,6 +12,7 @@ return {
 		},
 		opts = {
 			default_file_explorer = true,
+			show_hidden = true,
 			keymaps = {
 				["q"] = "actions.close",
 				["<C-h>"] = false,
