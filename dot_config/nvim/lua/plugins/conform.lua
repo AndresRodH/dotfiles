@@ -1,7 +1,6 @@
 return {
 	{
 		"stevearc/conform.nvim",
-		optional = true,
 		opts = {
 			formatters_by_ft = {
 				["javascript"] = { { "biome", "prettier" } },
@@ -11,9 +10,6 @@ return {
 				["html"] = { { "biome", "prettier" } },
 				["json"] = { { "biome", "prettier" } },
 				["jsonc"] = { "biome" },
-				["yaml"] = { "prettier" },
-				["md"] = { "prettier" },
-				["mdx"] = { "prettier" },
 			},
 		},
 	},
