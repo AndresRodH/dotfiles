@@ -13,6 +13,9 @@ return {
 		opts = {
 			default_file_explorer = true,
 			show_hidden = true,
+      is_hidden_file = function(name, bufnr)
+        return vim.startswith(name, ".") and !vim.startsWith(name, ".server") and !vim.startsWith(name, ".client")
+      end,
 			keymaps = {
 				["q"] = "actions.close",
 				["<C-h>"] = false,
