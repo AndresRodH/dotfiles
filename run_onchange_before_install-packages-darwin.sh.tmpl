@@ -3,7 +3,7 @@
 
 # install/update homebrew
 which -s brew
-if [[ $? != 0 ]] ; then
+if [[ $? != 0 ]]; then
   echo "Homebrew not found. Installing..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
@@ -16,6 +16,7 @@ brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
 
+brew "chezmoi"
 brew "eza"
 brew "fnm"
 brew "go"
