@@ -21,7 +21,7 @@ This setup uses [chezmoi](https://www.chezmoi.io/) to manage dotfiles. To bootst
 
 ```sh
 export GITHUB_USERNAME=AndresRodH # update this with your github username if you cloned/forked this repo
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply $GITHUB_USERNAME
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --ssh --apply $GITHUB_USERNAME
 ```
 
 ## What's in it?
@@ -40,7 +40,7 @@ There's a lot of stuff in here. Actually, there's a lot of stuff that you may no
    - Check the [configuration](`dot_tmux.conf`) for a list of plugins used
 
 3. [neovim](https://neovim.io/)
-   - Uses [lazyvim](https://www.lazyvim.org/) 
+   - Uses [lazyvim](https://www.lazyvim.org/)
 
 4. [Homebrew](https://brew.sh/) - [check what's included](run_once_before_install-packages-darwin.sh.tmpl)
 
@@ -63,4 +63,3 @@ Cache may need to be rebuilt
 ```sh
 bat cache --build
 ```
-
