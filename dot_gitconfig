@@ -13,7 +13,6 @@
 
 [delta]
   navigate = true
-  side-by-side = true
 
 [merge]
   conflictStyle = diff3
