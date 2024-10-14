@@ -13,6 +13,7 @@
 
 [delta]
   navigate = true
+  line-numbers = true
 
 [merge]
   conflictStyle = diff3
