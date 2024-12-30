@@ -6,7 +6,9 @@ mouse-hide-while-typing = true
 
 font-size = 16
 font-family = "JetBrainsMono Nerd Font Mono"
-font-feature = -calt, -liga, -dlig
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
 
 window-padding-y = 0
 window-padding-x = 0
