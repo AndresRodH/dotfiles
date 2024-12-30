@@ -1,0 +1,11 @@
+theme = catppuccin-mocha
+
+shell-integration-features = no-cursor
+cursor-style = block
+mouse-hide-while-typing = true
+
+font-size = 16
+font-family = "JetBrainsMono Nerd Font Mono"
+
+window-padding-y = 0
+window-padding-x = 0
