@@ -15,10 +15,11 @@ fi
 brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
+tap "oven-sh/bun/bun"
 
 brew "bat"
 brew "btop"
-brew "oven-sh/bun/bun"
+brew "bun"
 brew "chezmoi"
 brew "eza"
 brew "fd"
@@ -48,7 +49,6 @@ cask "orbstack"
 cask "raycast"
 cask "spotify"
 cask "whatsapp"
-cask "1password"
 
 EOF
 {{ end -}}
