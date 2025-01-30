@@ -11,6 +11,9 @@ return {
 					},
 				},
 			},
+			graphql = {
+				filetypes = { "graphql", "typescriptreact", "javascriptreact", "vue" },
+			},
 		},
 	},
 }
