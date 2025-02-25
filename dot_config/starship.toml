@@ -2,8 +2,13 @@
 
 palette = "catppuccin_mocha"
 
-[package]
-display_private = true
+[aws]
+format = 'on [$symbol($profile )(\($region\) )]($style)'
+style = 'bold blue'
+symbol = '☁️ '
+
+[docker_context]
+disabled = true
 
 [character]
 success_symbol = "[(green)❯](peach)"
