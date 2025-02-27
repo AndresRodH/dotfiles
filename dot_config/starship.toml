@@ -1,6 +1,6 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-palette = "catppuccin_mocha"
+palette = "catppuccin_latte"
 
 [aws]
 format = 'on [$symbol($profile )(\($region\) )]($style)'
