@@ -2,4 +2,4 @@
 git:
   paging:
     colorArg: always
-    pager: delta --paging=never
+    pager: delta --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --paging=never --features $(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo catppuccin-mocha || echo catppuccin-latte)
