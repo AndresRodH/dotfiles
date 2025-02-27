@@ -1,6 +1,6 @@
-theme = catppuccin-mocha
+theme = dark:catppuccin-mocha,light:catppuccin-latte
 
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor,no-title
 cursor-style = block
 mouse-hide-while-typing = true
 
@@ -12,3 +12,25 @@ font-feature = -dlig
 
 window-padding-y = 0
 window-padding-x = 0
+
+# tabs (panes)
+keybind = ctrl+a>c=new_tab
+keybind = ctrl+a>x=close_tab
+
+# splits
+keybind = ctrl+a>s>n=new_split:auto
+keybind = ctrl+a>s>r=new_split:right
+keybind = ctrl+a>s>d=new_split:down
+keybind = ctrl+a>s>l=new_split:left
+keybind = ctrl+a>s>u=new_split:up
+keybind = ctrl+a>s>e=equalize_splits
+
+# navigation on splits
+keybind = alt+h=goto_split:left
+keybind = alt+j=goto_split:down
+keybind = alt+k=goto_split:up
+keybind = alt+l=goto_split:right
+
+# navigation on tabs
+keybind = ctrl+a>p=previous_tab
+keybind = ctrl+a>n=next_tab
