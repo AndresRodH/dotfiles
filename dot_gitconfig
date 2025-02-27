@@ -2,11 +2,14 @@
 	name = Andres Rodriguez
 	email = "16929001+AndresRodH@users.noreply.github.com"
 
+[include]
+  path = ~/.config/delta/themes/catppuccin.gitconfig
+
 [pull]
 	rebase = false
 
 [core]
-  pager = delta
+  pager = delta --tabs 2 --features "$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo catppuccin-dark || echo catppuccin-light)"
 
 [interactive]
   diffFilter = delta --color-only
