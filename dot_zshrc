@@ -29,11 +29,6 @@ eval "$(fzf --zsh)"
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
-# catppuccin mocha
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
 
 _fzf_compgen_path() {
   fd --hidden --exclude .git . "$1"
@@ -79,7 +74,8 @@ eval "$(fnm env --use-on-cd)"
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # catppuccin theme for bat
-export BAT_THEME="Catppuccin Mocha"
+export BAT_THEME_DARK="Catppuccin Mocha"
+export BAT_THEME_LIGHT="Catppuccin Latte"
 
 # smart cd
 eval "$(zoxide init zsh)"
