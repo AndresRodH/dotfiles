@@ -6,6 +6,8 @@ palette = "catppuccin_latte"
 format = 'on [$symbol($profile )(\($region\) )]($style)'
 style = 'bold blue'
 symbol = '☁️ '
+[aws.profile_aliases]
+"465395875748:AdministratorAccess" = "curate-dev"
 
 [docker_context]
 disabled = true
