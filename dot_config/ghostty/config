@@ -1,11 +1,12 @@
 theme = dark:catppuccin-mocha,light:catppuccin-latte
 
-shell-integration-features = no-cursor,no-title
+shell-integration-features = no-cursor,title
 cursor-style = block
 mouse-hide-while-typing = true
+macos-titlebar-style = tabs
 
 font-thicken = true
-font-family = "JetBrainsMono Nerd Font Mono"
+font-family = JetBrainsMono Nerd Font Mono
 font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
