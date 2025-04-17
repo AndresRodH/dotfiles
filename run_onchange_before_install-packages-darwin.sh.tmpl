@@ -6,13 +6,9 @@ which -s brew
 if [[ $? != 0 ]]; then
   echo "Homebrew not found. Installing..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-else
-  echo "Homebrew already installed. Updating..."
-  brew update
-  brew upgrade
 fi
 
-brew bundle --no-lock --file=/dev/stdin <<EOF
+brew bundle --upgrade --file=/dev/stdin <<EOF
 tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
 tap "oven-sh/bun"
