@@ -28,10 +28,12 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --ssh --apply AndresRodH # update t
 There's a lot of stuff in here. Actually, there's a lot of stuff that you may not need! [Fork this repo](https://github.com/AndresRodH/dotfiles/fork), remove what you don't use and add what you do use.
 
 1. [zsh](https://www.zsh.org/)
+
    - Uses [zap](https://github.com/zap-zsh/zap) as a plugin manager
    - Aliases are set up in [aliases.zsh](`dot_config/zsh/aliases.zsh`) and exports in [exports.zsh](`dot_config/zsh/exports.zsh`)
 
 2. [tmux](https://github.com/tmux/tmux)
+
    - Sets up [Tmux Plugin Manager (tpm)](https://github.com/tmux-plugins/tpm) automatically on first run
    - Remaps the prefix to `<C-a>`
    - `<C-a>I` install tmux plugins
@@ -39,6 +41,7 @@ There's a lot of stuff in here. Actually, there's a lot of stuff that you may no
    - Check the [configuration](`dot_tmux.conf`) for a list of plugins used
 
 3. [neovim](https://neovim.io/)
+
    - Uses [lazyvim](https://www.lazyvim.org/)
 
 4. [Homebrew](https://brew.sh/) - [check what's included](run_once_before_install-packages-darwin.sh.tmpl)
@@ -62,3 +65,7 @@ Cache may need to be rebuilt
 ```sh
 bat cache --build
 ```
+
+### Sketchybar setup
+
+May need to make scripts executable. Check the official [Sketchybar setup](https://felixkratz.github.io/SketchyBar/setup) for more.
