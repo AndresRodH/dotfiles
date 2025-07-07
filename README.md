@@ -1,4 +1,4 @@
-# macOS Dotfiles with GNU Stow
+# dotfiles
 
 A simple macOS dotfiles setup using GNU Stow for symlink management with automatic backup and restore functionality.
 
@@ -121,6 +121,21 @@ This setup was migrated from Chezmoi. The main differences:
 - **Homebrew integration**: Uses Homebrew for all package management
 - **Backup system**: Automatic backup and restore functionality
 
+### Cleaning up Chezmoi
+
+After migrating to this stow-based setup, you can clean up your old chezmoi installation:
+
+```bash
+# Remove chezmoi configuration and data
+rm -rf ~/.local/share/chezmoi  # Source directory
+rm -rf ~/.config/chezmoi       # Configuration directory
+
+# Uninstall chezmoi binary
+brew uninstall chezmoi
+# or if installed via script:
+sudo rm /usr/local/bin/chezmoi
+```
+
 ## 📦 Included Applications
 
 - **Shell**: Zsh with Starship prompt and Zap plugin manager
@@ -145,10 +160,6 @@ Cache may need to be rebuilt:
 bat cache --build
 ```
 
-### Sketchybar setup
-
-May need to make scripts executable. Check the official [Sketchybar setup](https://felixkratz.github.io/SketchyBar/setup) for more.
-
 ### I want to restore my original dotfiles
 
 ```bash
@@ -158,7 +169,3 @@ May need to make scripts executable. Check the official [Sketchybar setup](https
 ### Something went wrong during installation
 
 Check the backup directory (`.backup/TIMESTAMP/`) - your original files are safely stored there.
-
-## License
-
-MIT License - see individual package licenses for more details.
