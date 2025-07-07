@@ -1,5 +1,0 @@
-#!/bin/bash
-
-sketchybar --add item front_app left \
-  --set front_app icon.font="sketchybar-app-font:Regular:16.0" script="$PLUGIN_DIR/front_app.sh" background.color=0x44ffffff \
-  --subscribe front_app front_app_switched
