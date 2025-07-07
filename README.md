@@ -1,56 +1,89 @@
-# dotfiles
+# Dotfiles with GNU Stow
 
-> [!NOTE]
-> If you are looking for the GNU Stow-based setup, go [here](https://github.com/AndresRodH/config)
+A simple dotfiles setup using GNU Stow for symlink management.
 
-All the things I use. This targets OSX only. Tested on Intel Macs only, some tweaks may need to be made for Apple Silicon Macs.
+## Quick Start
 
-## Requirements
-
-1. Install Apple's Command Line Tools (they are prereqs for Git and Homebrew)
-
-   ```sh
-   xcode-select --install
+1. **Clone this repository:**
+   ```bash
+   git clone https://github.com/AndresRodH/dotfiles.git ~/.dotfiles
+   cd ~/.dotfiles
    ```
 
-2. Update XCode to the latest version. Some apps, like [lazygit](https://github.com/jesseduffield/lazygit), will fail to install otherwise
+2. **Install GNU Stow:**
+   ```bash
+   # macOS
+   brew install stow
+   
+   # Ubuntu/Debian
+   sudo apt install stow
+   
+   # Arch Linux
+   sudo pacman -S stow
+   ```
 
-## Bootstrap a new Mac
+3. **Install dotfiles:**
+   ```bash
+   ./install.sh
+   ```
 
-This setup uses [chezmoi](https://www.chezmoi.io/) to manage dotfiles. To bootstrap a new Mac:
+4. **Install packages (macOS only):**
+   ```bash
+   ./scripts/install-packages.sh
+   ```
 
-```sh
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --ssh --apply AndresRodH # update this with your GitHub username if you cloned/forked this repo
+5. **Install Zap (Zsh plugin manager):**
+   ```bash
+   ./scripts/install-zap.sh
+   ```
+
+## Structure
+
+Each application has its own directory in the root:
+
+- `zsh/` - Zsh configuration (.zshrc)
+- `git/` - Git configuration (.gitconfig)
+- `tmux/` - Tmux configuration (.tmux.conf)
+- `nvim/` - Neovim configuration
+- `starship/` - Starship prompt configuration
+- `aerospace/` - Aerospace window manager
+- `bat/` - Bat (better cat) themes
+- `delta/` - Git delta themes
+- `ghostty/` - Ghostty terminal configuration
+- `iterm/` - iTerm2 configuration
+- `lazygit/` - Lazygit configuration
+- `sketchybar/` - Sketchybar configuration
+
+## Manual Installation
+
+You can install specific packages individually:
+
+```bash
+# Install only specific packages
+stow zsh git tmux
+
+# Uninstall a package
+stow -D nvim
 ```
 
-## What's in it?
+## Migration from Chezmoi
 
-There's a lot of stuff in here. Actually, there's a lot of stuff that you may not need! [Fork this repo](https://github.com/AndresRodH/dotfiles/fork), remove what you don't use and add what you do use.
+This setup was migrated from Chezmoi. The main differences:
 
-1. [zsh](https://www.zsh.org/)
+- **Simpler structure**: Each app gets its own stow package
+- **No templating**: Plain configuration files
+- **Manual scripts**: Separate install scripts instead of chezmoi hooks
+- **Standard symlinks**: Uses GNU stow's symlink management
 
-   - Uses [zap](https://github.com/zap-zsh/zap) as a plugin manager
-   - Aliases are set up in [aliases.zsh](`dot_config/zsh/aliases.zsh`) and exports in [exports.zsh](`dot_config/zsh/exports.zsh`)
+## Included Applications
 
-2. [tmux](https://github.com/tmux/tmux)
-
-   - Sets up [Tmux Plugin Manager (tpm)](https://github.com/tmux-plugins/tpm) automatically on first run
-   - Remaps the prefix to `<C-a>`
-   - `<C-a>I` install tmux plugins
-   - `<C-a>r` reload tmux configuration
-   - Check the [configuration](`dot_tmux.conf`) for a list of plugins used
-
-3. [neovim](https://neovim.io/)
-
-   - Uses [lazyvim](https://www.lazyvim.org/)
-
-4. [Homebrew](https://brew.sh/) - [check what's included](run_once_before_install-packages-darwin.sh.tmpl)
-
-5. [Git profile management](`dot_gitconfig`)
-
-6. [Starship](https://starship.rs/) prompt
-
-... and more!
+- **Shell**: Zsh with Starship prompt and Zap plugin manager
+- **Editor**: Neovim with LazyVim configuration
+- **Terminal**: Ghostty, iTerm2
+- **Window Manager**: Aerospace
+- **Status Bar**: Sketchybar
+- **Git**: Delta for diffs, Lazygit for TUI
+- **Tools**: Bat, Tmux, and various CLI utilities
 
 ## FAQ
 
@@ -69,3 +102,7 @@ bat cache --build
 ### Sketchybar setup
 
 May need to make scripts executable. Check the official [Sketchybar setup](https://felixkratz.github.io/SketchyBar/setup) for more.
+
+## License
+
+MIT License - see individual package licenses for more details.
