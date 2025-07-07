@@ -1,13 +1,23 @@
-{{- if eq .chezmoi.os "darwin" -}}
 #!/bin/zsh
 
-# install/update homebrew
+# macOS package installation script
+# This replaces the chezmoi template functionality
+
+if [[ "$OSTYPE" != "darwin"* ]]; then
+    echo "This script is for macOS only"
+    exit 1
+fi
+
+echo "Installing/updating Homebrew packages..."
+
+# Install homebrew if not present
 which -s brew
 if [[ $? != 0 ]]; then
   echo "Homebrew not found. Installing..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+# Install packages
 brew bundle --upgrade --file=/dev/stdin <<EOF
 tap "FelixKratz/formulae"
 tap "jesseduffield/lazydocker"
@@ -19,7 +29,6 @@ brew "awscli"
 brew "bat"
 brew "btop"
 brew "bun"
-brew "chezmoi"
 brew "eza"
 brew "fd"
 brew "fnm"
@@ -35,6 +44,7 @@ brew "neovim"
 brew "ripgrep"
 brew "sketchybar"
 brew "starship"
+brew "stow"
 brew "thefuck"
 brew "tlrc"
 brew "tmux"
@@ -58,4 +68,5 @@ cask "whatsapp"
 cask "zen-browser"
 
 EOF
-{{ end -}}
+
+echo "Package installation complete!"
