@@ -67,7 +67,7 @@ inner.horizontal = 10
 inner.vertical = 10
 outer.left = 10
 outer.bottom = 10
-outer.top = [{ monitor.main = 42 }, 10]
+outer.top = [{ monitor."built-in" = 10 }, 42]
 outer.right = 10
 
 # 'main' binding mode declaration
@@ -116,10 +116,6 @@ alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
 alt-4 = 'workspace 4'
 alt-5 = 'workspace 5'
-alt-b = 'workspace B'
-alt-c = 'workspace C'
-alt-m = 'workspace M'
-alt-t = 'workspace T'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 cmd-ctrl-alt-shift-1 = 'move-node-to-workspace 1'
@@ -127,10 +123,6 @@ cmd-ctrl-alt-shift-2 = 'move-node-to-workspace 2'
 cmd-ctrl-alt-shift-3 = 'move-node-to-workspace 3'
 cmd-ctrl-alt-shift-4 = 'move-node-to-workspace 4'
 cmd-ctrl-alt-shift-5 = 'move-node-to-workspace 5'
-cmd-ctrl-alt-shift-b = 'move-node-to-workspace B'
-cmd-ctrl-alt-shift-c = 'move-node-to-workspace C'
-cmd-ctrl-alt-shift-m = 'move-node-to-workspace M'
-cmd-ctrl-alt-shift-t = 'move-node-to-workspace T'
 
 cmd-ctrl-alt-shift-f = 'fullscreen'
 
@@ -177,4 +169,4 @@ alt-shift-l = ['join-with right', 'mode main']
 
 
 [workspace-to-monitor-force-assignment]
-C = 'built-in'
+2 = 'built-in'
