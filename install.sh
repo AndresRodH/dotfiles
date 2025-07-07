@@ -2,6 +2,8 @@
 
 set -e
 
+# macOS-only dotfiles installer
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -20,19 +22,23 @@ echo_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Check if running on macOS
+if [[ "$OSTYPE" != "darwin"* ]]; then
+    echo_error "This dotfiles setup is designed for macOS only."
+    exit 1
+fi
+
 # Check if stow is installed
 if ! command -v stow &> /dev/null; then
     echo_error "GNU Stow is not installed. Please install it first:"
-    echo "  macOS: brew install stow"
-    echo "  Ubuntu/Debian: sudo apt install stow"
-    echo "  Arch: sudo pacman -S stow"
+    echo "  brew install stow"
     exit 1
 fi
 
 # Get the directory of this script
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo_info "Installing dotfiles from $DOTFILES_DIR"
+echo_info "🍎 Installing macOS dotfiles from $DOTFILES_DIR"
 
 # List of packages to install
 PACKAGES=(
@@ -60,7 +66,7 @@ for package in "${PACKAGES[@]}"; do
     fi
 done
 
-echo_info "Dotfiles installation complete!"
+echo_info "✓ Dotfiles installation complete!"
 echo_info "You may need to:"
 echo "  - Restart your shell or run 'source ~/.zshrc'"
 echo "  - Install dependencies with './scripts/install-packages.sh'"

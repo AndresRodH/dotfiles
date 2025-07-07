@@ -1,8 +1,32 @@
-# Dotfiles with GNU Stow
+# macOS Dotfiles with GNU Stow
 
-A simple dotfiles setup using GNU Stow for symlink management.
+A simple macOS dotfiles setup using GNU Stow for symlink management with automatic backup and restore functionality.
 
-## Quick Start
+## 🍎 Requirements
+
+- **macOS** (this setup is macOS-specific)
+- **Nothing else!** (bootstrap handles all dependencies automatically)
+
+## 🚀 Quick Start (Recommended)
+
+**One-command bootstrap:**
+```bash
+git clone https://github.com/AndresRodH/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ./bootstrap.sh
+```
+
+This will automatically:
+- Check that you're running on macOS
+- Install Homebrew if not present
+- Install GNU Stow via Homebrew
+- Install **all CLI tools, apps, and fonts** via Homebrew (40+ packages!)
+- Backup any existing dotfiles safely
+- Install all dotfiles packages with stow
+- Install Zap plugin manager for Zsh
+- Give you next steps
+
+## 📋 Manual Installation
+
+If you prefer step-by-step control:
 
 1. **Clone this repository:**
    ```bash
@@ -12,14 +36,7 @@ A simple dotfiles setup using GNU Stow for symlink management.
 
 2. **Install GNU Stow:**
    ```bash
-   # macOS
    brew install stow
-   
-   # Ubuntu/Debian
-   sudo apt install stow
-   
-   # Arch Linux
-   sudo pacman -S stow
    ```
 
 3. **Install dotfiles:**
@@ -27,17 +44,34 @@ A simple dotfiles setup using GNU Stow for symlink management.
    ./install.sh
    ```
 
-4. **Install packages (macOS only):**
+4. **Install macOS packages (optional - already included in bootstrap):**
    ```bash
    ./scripts/install-packages.sh
    ```
 
-5. **Install Zap (Zsh plugin manager):**
+5. **Install Zap (optional - already included in bootstrap):**
    ```bash
    ./scripts/install-zap.sh
    ```
 
-## Structure
+## 🔄 Backup & Restore
+
+The bootstrap script automatically handles existing dotfiles:
+
+- **Automatic Backup**: Existing files are backed up to `.backup/TIMESTAMP/`
+- **Safe Installation**: Never overwrites files, always backs up first
+- **Easy Restore**: Restore original files anytime
+
+### Restore Commands
+```bash
+# List and restore backed up files
+./uninstall.sh --restore
+
+# Uninstall dotfiles (offers to restore backups)
+./uninstall.sh
+```
+
+## 📁 Structure
 
 Each application has its own directory in the root:
 
@@ -54,54 +88,68 @@ Each application has its own directory in the root:
 - `lazygit/` - Lazygit configuration
 - `sketchybar/` - Sketchybar configuration
 
-## Manual Installation
+## ⚡ Manual Package Management
 
 You can install specific packages individually:
 
 ```bash
-# Install only specific packages
+# Install only specific packages  
 stow zsh git tmux
 
 # Uninstall a package
 stow -D nvim
+
+# Install all packages manually
+./install.sh
 ```
 
-## Migration from Chezmoi
+## 🔧 Migration from Chezmoi
 
 This setup was migrated from Chezmoi. The main differences:
 
+- **macOS-focused**: Simplified for macOS-only usage
 - **Simpler structure**: Each app gets its own stow package
 - **No templating**: Plain configuration files
-- **Manual scripts**: Separate install scripts instead of chezmoi hooks
-- **Standard symlinks**: Uses GNU stow's symlink management
+- **Homebrew integration**: Uses Homebrew for all package management
+- **Backup system**: Automatic backup and restore functionality
 
-## Included Applications
+## 📦 Included Applications
 
 - **Shell**: Zsh with Starship prompt and Zap plugin manager
 - **Editor**: Neovim with LazyVim configuration
 - **Terminal**: Ghostty, iTerm2
-- **Window Manager**: Aerospace
-- **Status Bar**: Sketchybar
+- **Window Manager**: Aerospace (macOS)
+- **Status Bar**: Sketchybar (macOS)
 - **Git**: Delta for diffs, Lazygit for TUI
-- **Tools**: Bat, Tmux, and various CLI utilities
+- **Tools**: Bat, Tmux, and various CLI utilities via Homebrew
 
-## FAQ
+## ❓ FAQ
 
 ### My tmux looks bad
 
-Make sure to install to install any tmux plugins by pressing `<C-a>I` while in a tmux session.
+Make sure to install tmux plugins by pressing `<C-a>I` while in a tmux session.
 
 ### `bat` theme is not applied
 
-Cache may need to be rebuilt
+Cache may need to be rebuilt:
 
-```sh
+```bash
 bat cache --build
 ```
 
 ### Sketchybar setup
 
 May need to make scripts executable. Check the official [Sketchybar setup](https://felixkratz.github.io/SketchyBar/setup) for more.
+
+### I want to restore my original dotfiles
+
+```bash
+./uninstall.sh --restore
+```
+
+### Something went wrong during installation
+
+Check the backup directory (`.backup/TIMESTAMP/`) - your original files are safely stored there.
 
 ## License
 
