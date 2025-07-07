@@ -19,13 +19,13 @@ local function battery_update()
 	sbar.exec("pmset -g batt", function(batt_info)
 		local icon = "!"
 		local found, _, charge = batt_info:find("(%d+)%%")
+		if found then
+			battery:set({ label = charge .. "%" })
+		end
 
 		if string.find(batt_info, "AC Power") then
 			icon = icons.battery.charging
 			battery:set({ icon = { color = colors.green } })
-			if found then
-				battery:set({ label = charge .. "%" })
-			end
 		else
 			battery:set({ icon = { color = colors.white } })
 			local total_charge = nil
