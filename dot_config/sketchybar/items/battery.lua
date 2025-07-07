@@ -42,6 +42,7 @@ local function battery_update()
 			elseif found and total_charge > 20 then
 				icon = icons.battery._25
 			else
+				battery:set({ icon = { color = colors.red } })
 				icon = icons.battery._0
 			end
 		end
