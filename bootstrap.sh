@@ -91,6 +91,14 @@ else
   echo_warn "Package installation script not found, skipping..."
 fi
 
+# Install Zap
+echo_step "Installing Zap (Zsh plugin manager)..."
+if [ -f "$DOTFILES_DIR/scripts/install-zap.sh" ]; then
+  "$DOTFILES_DIR/scripts/install-zap.sh"
+else
+  echo_warn "Zap installation script not found, skipping..."
+fi
+
 # List of packages to install
 PACKAGES=(
   "zsh"
@@ -169,9 +177,14 @@ install_package() {
     # Backup existing files first
     backup_existing_files "$package"
 
-    # Install with stow
-    stow -d "$DOTFILES_DIR" -t "$HOME" "$package"
-    echo_info "✓ $package installed successfully"
+    # Install with stow with verbose output and no-folding
+    echo_info "Running: stow -d '$DOTFILES_DIR' -t '$HOME' --no-folding '$package'"
+    if stow -v -d "$DOTFILES_DIR" -t "$HOME" --no-folding "$package" 2>&1; then
+      echo_info "✓ $package installed successfully"
+    else
+      echo_error "✗ Failed to install $package"
+      return 1
+    fi
   else
     echo_warn "Package $package not found, skipping..."
   fi
@@ -196,14 +209,6 @@ EOF
   echo_info "📦 Backup created at: $BACKUP_DIR"
 fi
 
-# Install Zap
-echo_step "Installing Zap (Zsh plugin manager)..."
-if [ -f "$DOTFILES_DIR/scripts/install-zap.sh" ]; then
-  "$DOTFILES_DIR/scripts/install-zap.sh"
-else
-  echo_warn "Zap installation script not found, skipping..."
-fi
-
 echo_info "🎉 macOS dotfiles bootstrap complete!"
 echo_info ""
 echo_info "Next steps:"
@@ -217,4 +222,3 @@ if [ -d "$BACKUP_DIR" ]; then
   echo "   $BACKUP_DIR"
   echo "   To restore them, run: ./uninstall.sh --restore"
 fi
-
