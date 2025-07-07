@@ -10,11 +10,13 @@ A simple macOS dotfiles setup using GNU Stow for symlink management with automat
 ## 🚀 Quick Start (Recommended)
 
 **One-command bootstrap:**
+
 ```bash
-git clone https://github.com/AndresRodH/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ./bootstrap.sh
+git clone git@github.com:AndresRodH/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ./bootstrap.sh
 ```
 
 This will automatically:
+
 - Check that you're running on macOS
 - Install Homebrew if not present
 - Install GNU Stow via Homebrew
@@ -29,27 +31,32 @@ This will automatically:
 If you prefer step-by-step control:
 
 1. **Clone this repository:**
+
    ```bash
    git clone https://github.com/AndresRodH/dotfiles.git ~/.dotfiles
    cd ~/.dotfiles
    ```
 
 2. **Install GNU Stow:**
+
    ```bash
    brew install stow
    ```
 
 3. **Install dotfiles:**
+
    ```bash
    ./install.sh
    ```
 
 4. **Install macOS packages (optional - already included in bootstrap):**
+
    ```bash
    ./scripts/install-packages.sh
    ```
 
 5. **Install Zap (optional - already included in bootstrap):**
+
    ```bash
    ./scripts/install-zap.sh
    ```
@@ -63,6 +70,7 @@ The bootstrap script automatically handles existing dotfiles:
 - **Easy Restore**: Restore original files anytime
 
 ### Restore Commands
+
 ```bash
 # List and restore backed up files
 ./uninstall.sh --restore
@@ -93,7 +101,7 @@ Each application has its own directory in the root:
 You can install specific packages individually:
 
 ```bash
-# Install only specific packages  
+# Install only specific packages
 stow zsh git tmux
 
 # Uninstall a package
