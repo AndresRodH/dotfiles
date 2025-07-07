@@ -33,7 +33,7 @@ If you prefer step-by-step control:
 1. **Clone this repository:**
 
    ```bash
-   git clone https://github.com/AndresRodH/dotfiles.git ~/.dotfiles
+   git clone git@github.com:AndresRodH/dotfiles.git ~/.dotfiles
    cd ~/.dotfiles
    ```
 
