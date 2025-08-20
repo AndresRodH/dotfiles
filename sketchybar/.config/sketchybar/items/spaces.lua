@@ -9,8 +9,19 @@ local function parse_string_to_table(s)
 end
 
 local file = io.popen("aerospace list-workspaces --all")
+
+if not file then
+	print("Failed to run aerospace list-workspaces command")
+	return
+end
+
 local result = file:read("*a")
 file:close()
+
+if not result or result == "" then
+	print("No workspaces found")
+	return
+end
 
 local workspaces = parse_string_to_table(result)
 
