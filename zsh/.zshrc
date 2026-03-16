@@ -30,7 +30,7 @@ precmd() {
 }
 
 alias vim='precmd && nvim'
-alias gitprune="git for-each-ref --format '%(refname:short)' refs/heads | grep -v "master\|main" | xargs git branch -D"
+alias gitprune='git for-each-ref --format "%(refname:short)" refs/heads | grep -v "master\|main" | xargs git branch -D'
 
 # --------------- fzf --------------
 eval "$(fzf --zsh)"
@@ -136,3 +136,15 @@ compdef __aws_sso_profile_complete aws-sso-profile
 complete -C /opt/homebrew/bin/aws-sso aws-sso
 
 # END_AWS_SSO_CLI
+
+# opencode
+export PATH=/Users/xish/.opencode/bin:$PATH
+
+# beads
+export PATH="$PATH:/Users/xish/.local/bin"
+
+# python
+export PATH="$PATH:/Users/xish/Library/Python/3.9/bin"
+
+# Added by Ultimate Bug Scanner Installer
+alias bash='/opt/homebrew/bin/bash'
