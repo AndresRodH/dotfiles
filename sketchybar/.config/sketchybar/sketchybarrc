@@ -1,26 +1,165 @@
-#!/usr/bin/env lua
+#!/usr/bin/env sh
 
--- This is only needed once to install the sketchybar module
--- (or for an update of the module)
-os.execute(
-	"[ ! -d $HOME/.local/share/sketchybar_lua/ ] && (git clone https://github.com/FelixKratz/SbarLua.git /tmp/SbarLua && cd /tmp/SbarLua/ && make install && rm -rf /tmp/SbarLua/)"
-)
+SOURCE="$0"
+while [ -L "$SOURCE" ]; do
+  DIR="$(CDPATH= cd -- "$(dirname -- "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  case "$SOURCE" in
+    /*) ;;
+    *) SOURCE="$DIR/$SOURCE" ;;
+  esac
+done
 
--- Add the sketchybar module to the package cpath (the module could be
--- installed into the default search path then this would not be needed)
-package.cpath = package.cpath .. ";/Users/" .. os.getenv("USER") .. "/.local/share/sketchybar_lua/?.so"
+CONFIG_DIR="$(CDPATH= cd -- "$(dirname -- "$SOURCE")" && pwd)"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
 
--- Require the sketchybar module
-sbar = require("sketchybar")
+export WHITE=0xffcad3f5
+export RED=0xffed8796
+export GREEN=0xffa6da95
+export BLUE=0xff8aadf4
+export GREY=0xff939ab7
+export BAR_BG=0xd01e1e2e
+export BAR_BORDER=0xff494d64
+export POPUP_BG=0xff1e1e2e
+export POPUP_BORDER=0xffcad3f5
+export BG2=0xff494d64
 
--- Bundle the entire initial configuration into a single message to sketchybar
--- This improves startup times drastically, try removing both the begin and end
--- config calls to see the difference -- yeah..
-sbar.begin_config()
-require("init")
-sbar.hotload(true)
-sbar.end_config()
+sketchybar --bar \
+  height=32 \
+  color="$BAR_BG" \
+  border_color="$BAR_BORDER" \
+  shadow=off \
+  sticky=on \
+  padding_right=10 \
+  padding_left=10 \
+  blur_radius=0 \
+  topmost=window \
+  drawing=on
 
--- Run the event loop of the sketchybar module (without this there will be no
--- callback functions executed in the lua module)
-sbar.event_loop()
+sketchybar --default \
+  updates=when_shown \
+  icon.font="SF Pro:Bold:14.0" \
+  icon.color="$WHITE" \
+  icon.padding_left=3 \
+  icon.padding_right=3 \
+  label.font="SF Pro:Semibold:13.0" \
+  label.color="$WHITE" \
+  label.padding_left=3 \
+  label.padding_right=3 \
+  background.height=26 \
+  background.corner_radius=9 \
+  background.border_width=2 \
+  popup.background.border_width=2 \
+  popup.background.corner_radius=9 \
+  popup.background.border_color="$POPUP_BORDER" \
+  popup.background.color="$POPUP_BG" \
+  popup.blur_radius=20 \
+  padding_left=5 \
+  padding_right=5
+
+sketchybar --add event aerospace_workspace_change
+sketchybar --add event forced
+
+if command -v aerospace >/dev/null 2>&1; then
+  aerospace list-workspaces --all | while IFS= read -r workspace; do
+    [ -n "$workspace" ] || continue
+
+    sketchybar --add item "space.$workspace" left \
+      --set "space.$workspace" \
+        icon="$workspace" \
+        icon.padding_left=10 \
+        icon.padding_right=10 \
+        icon.color="$WHITE" \
+        icon.highlight_color="$RED" \
+        label.drawing=off \
+        label.color="$GREY" \
+        label.highlight_color="$WHITE" \
+        label.y_offset=-1 \
+        padding_left=2 \
+        padding_right=2 \
+        click_script="aerospace workspace '$workspace'" \
+        script="$PLUGIN_DIR/aerospace_space.sh $workspace" \
+      --subscribe "space.$workspace" aerospace_workspace_change forced
+  done
+fi
+
+sketchybar --add item aerospace_separator left \
+  --set aerospace_separator \
+    icon="􀆊" \
+    icon.font="SF Pro:Heavy:16.0" \
+    label.drawing=off \
+    padding_left=10 \
+    padding_right=8 \
+    associated_display=active
+
+sketchybar --add item front_app left \
+  --set front_app \
+    icon.font="sketchybar-app-font:Regular:16.0" \
+    label.font="SF Pro:Black:12.0" \
+    script="$PLUGIN_DIR/front_app.sh" \
+  --subscribe front_app front_app_switched forced
+
+sketchybar --add item media center \
+  --set media \
+    icon.drawing=off \
+    drawing=off \
+    updates=on \
+    script="$PLUGIN_DIR/media.sh" \
+  --subscribe media media_change
+
+sketchybar --add item calendar right \
+  --set calendar \
+    update_freq=15 \
+    icon.padding_right=0 \
+    icon.font="SF Pro:Black:12.0" \
+    label.width=45 \
+    label.align=right \
+    script="$PLUGIN_DIR/calendar.sh" \
+  --subscribe calendar forced system_woke
+
+sketchybar --add item user right \
+  --set user \
+    icon.drawing=off \
+    label=":: $USER ::"
+
+sketchybar --add slider volume_slider right 100 \
+  --set volume_slider \
+    updates=on \
+    label.drawing=off \
+    icon.drawing=off \
+    slider.highlight_color="$BLUE" \
+    slider.width=0 \
+    slider.background.height=6 \
+    slider.background.corner_radius=3 \
+    slider.background.color="$BG2" \
+    slider.knob="􀀁" \
+    slider.knob.drawing=off \
+    click_script="osascript -e \"set volume output volume \\\$PERCENTAGE\""
+
+sketchybar --add item volume_icon right \
+  --set volume_icon \
+    icon="􀊩" \
+    icon.width=0 \
+    icon.align=left \
+    icon.color="$GREY" \
+    icon.font="SF Pro:Regular:14.0" \
+    label.width=25 \
+    label.align=left \
+    label.font="SF Pro:Regular:14.0" \
+    script="$PLUGIN_DIR/volume.sh" \
+    click_script="$PLUGIN_DIR/toggle_volume_slider.sh" \
+  --subscribe volume_icon volume_change forced
+
+sketchybar --add item battery right \
+  --set battery \
+    update_freq=120 \
+    icon.font="SF Pro:Regular:19.0" \
+    label.padding_left=8 \
+    script="$PLUGIN_DIR/battery.sh" \
+  --subscribe battery forced power_source_change system_woke
+
+sketchybar --trigger forced
+NAME=front_app "$PLUGIN_DIR/front_app.sh"
+NAME=volume_icon "$PLUGIN_DIR/volume.sh"
+NAME=calendar "$PLUGIN_DIR/calendar.sh"
+NAME=battery "$PLUGIN_DIR/battery.sh"
