@@ -86,6 +86,7 @@ Each application has its own directory in the root:
 - `zsh/` - Zsh configuration (.zshrc)
 - `git/` - Git configuration (.gitconfig)
 - `tmux/` - Tmux configuration (.tmux.conf)
+- `herdr/` - Herdr agent multiplexer (`~/.config/herdr/config.toml`)
 - `nvim/` - Neovim configuration
 - `starship/` - Starship prompt configuration
 - `aerospace/` - Aerospace window manager
@@ -145,13 +146,24 @@ sudo rm /usr/local/bin/chezmoi
 - **Window Manager**: Aerospace (macOS)
 - **Status Bar**: Sketchybar (macOS)
 - **Git**: Delta for diffs, Lazygit for TUI
-- **Tools**: Bat, Tmux, and various CLI utilities via Homebrew
+- **Tools**: Bat, Tmux, Herdr, and various CLI utilities via Homebrew
 
 ## ❓ FAQ
 
 ### My tmux looks bad
 
 Make sure to install tmux plugins by pressing `<C-a>I` while in a tmux session.
+
+### Herdr setup after clone
+
+```bash
+brew install herdr
+stow -d ~/.dotfiles -t ~ --no-folding herdr
+herdr integration install opencode
+npx skills add ogulcancelik/herdr --skill herdr -g -y
+```
+
+Prefix is `C-a` (same as tmux). Detach with `C-a` then `q`. Reload config with `C-a` then `R` (shift+r). Resize mode is `C-a` then `r`. Do not nest tmux inside herdr if you want agent detection.
 
 ### `bat` theme is not applied
 
