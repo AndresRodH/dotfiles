@@ -140,6 +140,33 @@ complete -C /opt/homebrew/bin/aws-sso aws-sso
 # opencode
 export PATH=/Users/xish/.opencode/bin:$PATH
 
+oc-web() {
+  if ! command -v tailscale &>/dev/null; then
+    echo "tailscale not found" >&2
+    return 1
+  fi
+  if ! tailscale status &>/dev/null; then
+    echo "Tailscale is not running" >&2
+    return 1
+  fi
+  if [[ -z "$OPENCODE_SERVER_PASSWORD" ]]; then
+    echo "OPENCODE_SERVER_PASSWORD is not set (add it to ~/.zshrc.local)" >&2
+    return 1
+  fi
+
+  local ip host url
+  ip="$(tailscale ip -4)" || return 1
+  host="$(tailscale status --json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin)['Self']['DNSName'].rstrip('.'))" 2>/dev/null)"
+  url="http://${host:-$ip}:4096"
+
+  echo "Open on phone: $url"
+  echo "User: opencode"
+  opencode web --port 4096 --hostname "$ip"
+}
+
+# local secrets / machine-specific overrides (not in git)
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
 # beads
 export PATH="$PATH:/Users/xish/.local/bin"
 
@@ -148,3 +175,6 @@ export PATH="$PATH:/Users/xish/Library/Python/3.9/bin"
 
 # Added by Ultimate Bug Scanner Installer
 alias bash='/opt/homebrew/bin/bash'
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"

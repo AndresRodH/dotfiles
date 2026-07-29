@@ -95,6 +95,7 @@ Each application has its own directory in the root:
 - `iterm/` - iTerm2 configuration
 - `lazygit/` - Lazygit configuration
 - `sketchybar/` - Sketchybar configuration
+- `opencode/` - Custom OpenCode configuration
 
 ## ⚡ Manual Package Management
 
