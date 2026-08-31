@@ -13,153 +13,292 @@ done
 CONFIG_DIR="$(CDPATH= cd -- "$(dirname -- "$SOURCE")" && pwd)"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 
-export WHITE=0xffcad3f5
-export RED=0xffed8796
-export GREEN=0xffa6da95
-export BLUE=0xff8aadf4
-export GREY=0xff939ab7
-export BAR_BG=0xd01e1e2e
-export BAR_BORDER=0xff494d64
-export POPUP_BG=0xff1e1e2e
-export POPUP_BORDER=0xffcad3f5
-export BG2=0xff494d64
+# --- Theme detection (light/dark) -------------------------------------------
+if [ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" = "Dark" ]; then
+  # Catppuccin Mocha
+  export TEXT=0xffcdd6f4
+  export SUBTEXT=0xffbac2de
+  export BLUE=0xff89b4fa
+  export GREEN=0xffa6e3a1
+  export RED=0xfff38ba8
+  export MAUVE=0xffcba6f7
+  export PEACH=0xfffab387
+  export BAR_BG=0x00000000
+  export PILL_BG=0xf01e1e2e
+  export WS_ACTIVE=0xff1e1e2e
+  export WS_INACTIVE=0xffbac2de
+  export WS_HIGHLIGHT=0xffcba6f7
+  export ACCENT=$MAUVE
+  export MUTED=0xff7f849c
+  export SEPARATOR=0x409399b2
+else
+  # Catppuccin Latte
+  export TEXT=0xff4c4f69
+  export SUBTEXT=0xff5c5f77
+  export BLUE=0xff1e66f5
+  export GREEN=0xff40a02b
+  export RED=0xffd20f39
+  export MAUVE=0xff8839ef
+  export PEACH=0xfffe640b
+  export BAR_BG=0x00000000
+  export PILL_BG=0xf0eff1f5
+  export WS_ACTIVE=0xffeff1f5
+  export WS_INACTIVE=0xff7c7f93
+  export WS_HIGHLIGHT=0xff8839ef
+  export ACCENT=$MAUVE
+  export MUTED=0xff8c8fa1
+  export SEPARATOR=0x307c7f93
+fi
 
+# --- Bar setup --------------------------------------------------------------
 sketchybar --bar \
   height=32 \
   color="$BAR_BG" \
-  border_color="$BAR_BORDER" \
   shadow=off \
   sticky=on \
-  padding_right=10 \
-  padding_left=10 \
+  padding_right=8 \
+  padding_left=8 \
   blur_radius=0 \
   topmost=window \
   drawing=on
 
+# --- Defaults ---------------------------------------------------------------
 sketchybar --default \
   updates=when_shown \
-  icon.font="SF Pro:Bold:14.0" \
-  icon.color="$WHITE" \
-  icon.padding_left=3 \
-  icon.padding_right=3 \
-  label.font="SF Pro:Semibold:13.0" \
-  label.color="$WHITE" \
-  label.padding_left=3 \
-  label.padding_right=3 \
-  background.height=26 \
-  background.corner_radius=9 \
-  background.border_width=2 \
+  icon.font="JetBrainsMono Nerd Font Mono:Regular:16.0" \
+  icon.color="$TEXT" \
+  icon.padding_left=4 \
+  icon.padding_right=4 \
+  label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" \
+  label.color="$TEXT" \
+  label.padding_left=4 \
+  label.padding_right=4 \
+  background.drawing=off \
   popup.background.border_width=2 \
-  popup.background.corner_radius=9 \
-  popup.background.border_color="$POPUP_BORDER" \
-  popup.background.color="$POPUP_BG" \
+  popup.background.corner_radius=8 \
+  popup.background.border_color="$SUBTEXT" \
+  popup.background.color="$PILL_BG" \
   popup.blur_radius=20 \
-  padding_left=5 \
-  padding_right=5
+  padding_left=4 \
+  padding_right=4
 
+# --- Events -----------------------------------------------------------------
 sketchybar --add event aerospace_workspace_change
 sketchybar --add event forced
+sketchybar --add event appearance_change AppleInterfaceThemeChangedNotification
 
-if command -v aerospace >/dev/null 2>&1; then
-  aerospace list-workspaces --all | while IFS= read -r workspace; do
-    [ -n "$workspace" ] || continue
+# =============================================================================
+# LEFT SIDE
+# =============================================================================
 
-    sketchybar --add item "space.$workspace" left \
-      --set "space.$workspace" \
-        icon="$workspace" \
-        icon.padding_left=10 \
-        icon.padding_right=10 \
-        icon.color="$WHITE" \
-        icon.highlight_color="$RED" \
-        label.drawing=off \
-        label.color="$GREY" \
-        label.highlight_color="$WHITE" \
+AEROSPACE="/opt/homebrew/bin/aerospace"
+if [ -x "$AEROSPACE" ]; then
+  ws_tmp="$(mktemp -t sketchybar-workspaces)"
+  "$AEROSPACE" list-workspaces --all > "$ws_tmp"
+  while IFS= read -r ws; do
+    [ -n "$ws" ] || continue
+
+    sketchybar --add item "space.$ws" left \
+      --set "space.$ws" \
+        icon="$ws" \
+        icon.font="JetBrainsMono Nerd Font Mono:Regular:16.0" \
+        icon.color="$WS_INACTIVE" \
+        icon.padding_left=8 \
+        icon.padding_right=6 \
+        label.font="sketchybar-app-font:Regular:14.0" \
+        label.color="$WS_INACTIVE" \
+        label.padding_left=6 \
+        label.padding_right=8 \
         label.y_offset=-1 \
-        padding_left=2 \
-        padding_right=2 \
-        click_script="aerospace workspace '$workspace'" \
-        script="$PLUGIN_DIR/aerospace_space.sh $workspace" \
-      --subscribe "space.$workspace" aerospace_workspace_change forced
-  done
+        label.drawing=on \
+        click_script="$AEROSPACE workspace '$ws'" \
+        script="$PLUGIN_DIR/aerospace_workspace.sh $ws" \
+      --subscribe "space.$ws" aerospace_workspace_change forced
+  done < "$ws_tmp"
+  rm -f "$ws_tmp"
 fi
 
-sketchybar --add item aerospace_separator left \
-  --set aerospace_separator \
-    icon="􀆊" \
-    icon.font="SF Pro:Heavy:16.0" \
+sketchybar --add item sep_left left \
+  --set sep_left \
+    icon="⟨" \
+    icon.font="JetBrainsMono Nerd Font Mono:Regular:16.0" \
+    icon.color="$MUTED" \
     label.drawing=off \
-    padding_left=10 \
-    padding_right=8 \
-    associated_display=active
+    padding_left=5 \
+    padding_right=5
 
+# --- Front app ---------------------------------------------------------------
 sketchybar --add item front_app left \
   --set front_app \
     icon.font="sketchybar-app-font:Regular:16.0" \
-    label.font="SF Pro:Black:12.0" \
+    icon.color="$ACCENT" \
+    label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" \
+    label.color="$TEXT" \
     script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched forced
 
-sketchybar --add item media center \
-  --set media \
-    icon.drawing=off \
-    drawing=off \
-    updates=on \
-    script="$PLUGIN_DIR/media.sh" \
-  --subscribe media media_change
+# One background pill for the complete left cluster.
+sketchybar --add bracket left_group '/space\..*/' sep_left front_app
+sketchybar --set left_group \
+  background.drawing=on \
+  background.color="$PILL_BG" \
+  background.height=28 \
+  background.corner_radius=14 \
+  background.padding_left=8 \
+  background.padding_right=8
+
+# =============================================================================
+# RIGHT SIDE
+# =============================================================================
+
+# SketchyBar lays right-positioned items out in reverse declaration order.
+# Declare them from right to left so the visual order is media -> Wi-Fi ->
+# battery -> CPU -> RAM -> calendar.
+add_separator() {
+  sketchybar --add item "$1" right \
+    --set "$1" \
+      icon="⟨" \
+      icon.font="JetBrainsMono Nerd Font Mono:Regular:16.0" \
+      icon.color="$MUTED" \
+      label.drawing=off \
+      background.drawing=off \
+      padding_left=4 \
+      padding_right=4
+}
 
 sketchybar --add item calendar right \
   --set calendar \
     update_freq=15 \
-    icon.padding_right=0 \
-    icon.font="SF Pro:Black:12.0" \
-    label.width=45 \
-    label.align=right \
-    script="$PLUGIN_DIR/calendar.sh" \
-  --subscribe calendar forced system_woke
-
-sketchybar --add item user right \
-  --set user \
-    icon.drawing=off \
-    label=":: $USER ::"
-
-sketchybar --add slider volume_slider right 100 \
-  --set volume_slider \
-    updates=on \
-    label.drawing=off \
-    icon.drawing=off \
-    slider.highlight_color="$BLUE" \
-    slider.width=0 \
-    slider.background.height=6 \
-    slider.background.corner_radius=3 \
-    slider.background.color="$BG2" \
-    slider.knob="􀀁" \
-    slider.knob.drawing=off \
-    click_script="osascript -e \"set volume output volume \\\$PERCENTAGE\""
-
-sketchybar --add item volume_icon right \
-  --set volume_icon \
-    icon="􀊩" \
-    icon.width=0 \
-    icon.align=left \
-    icon.color="$GREY" \
-    icon.font="SF Pro:Regular:14.0" \
-    label.width=25 \
+    icon="󰃶" \
+    icon.font="JetBrainsMono Nerd Font Mono:Regular:20.0" \
+    icon.color="$MAUVE" \
+    label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" \
+    label.color="$TEXT" \
     label.align=left \
-    label.font="SF Pro:Regular:14.0" \
-    script="$PLUGIN_DIR/volume.sh" \
-    click_script="$PLUGIN_DIR/toggle_volume_slider.sh" \
-  --subscribe volume_icon volume_change forced
+    padding_left=6 \
+    padding_right=8 \
+    script="$PLUGIN_DIR/calendar.sh" \
+  --subscribe calendar forced system_woke appearance_change
+
+add_separator sep_calendar_cpu
+
+sketchybar --add item ram right \
+  --set ram \
+    icon="󰍛" \
+    icon.font="JetBrainsMono Nerd Font Mono:Regular:20.0" \
+    icon.color="$BLUE" \
+    label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" \
+    label.color="$TEXT" \
+    update_freq=10 \
+    script="$PLUGIN_DIR/system.sh" \
+  --subscribe ram forced
+
+sketchybar --add item cpu right \
+  --set cpu \
+    icon="󰻠" \
+    icon.font="JetBrainsMono Nerd Font Mono:Regular:20.0" \
+    icon.color="$PEACH" \
+    label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" \
+    label.color="$TEXT" \
+    update_freq=10 \
+    script="$PLUGIN_DIR/system.sh" \
+  --subscribe cpu forced
+
+add_separator sep_battery_cpu
 
 sketchybar --add item battery right \
   --set battery \
     update_freq=120 \
-    icon.font="SF Pro:Regular:19.0" \
-    label.padding_left=8 \
+    icon.font="JetBrainsMono Nerd Font Mono:Regular:14.0" \
+    icon.color="$GREEN" \
+    label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" \
+    label.color="$TEXT" \
+    label.padding_left=4 \
     script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery forced power_source_change system_woke
 
+add_separator sep_wifi_battery
+
+sketchybar --add item wifi right \
+  --set wifi \
+    icon="󰤨" \
+    icon.font="JetBrainsMono Nerd Font Mono:Regular:20.0" \
+    icon.color="$BLUE" \
+    padding_left=16 \
+    padding_right=6 \
+    label.drawing=off \
+    popup.align=right \
+    click_script="sketchybar --set wifi popup.drawing=toggle" \
+    script="$PLUGIN_DIR/wifi.sh" \
+  --subscribe wifi mouse.entered mouse.exited mouse.exited.global forced system_woke
+
+sketchybar --add item wifi.ssid popup.wifi \
+  --set wifi.ssid icon.drawing=off label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" label.color="$TEXT" label="Loading..."
+sketchybar --add item wifi.info popup.wifi \
+  --set wifi.info icon.drawing=off label.font="JetBrainsMono Nerd Font Mono:Regular:11.0" label.color="$SUBTEXT" label=""
+sketchybar --add item wifi.copy popup.wifi \
+  --set wifi.copy \
+    icon="󰆏" \
+    icon.font="JetBrainsMono Nerd Font Mono:Regular:16.0" \
+    icon.color="$BLUE" \
+    label="Copy public IP" \
+    label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" \
+    label.color="$TEXT" \
+    click_script="$PLUGIN_DIR/wifi_copy.sh"
+
+add_separator sep_media_wifi
+
+sketchybar --add item media right \
+  --set media \
+    icon="󰎈" \
+    icon.font="JetBrainsMono Nerd Font Mono:Regular:16.0" \
+    icon.drawing=on \
+    icon.color="$MAUVE" \
+    label.font="JetBrainsMono Nerd Font Mono:Regular:12.0" \
+    label.color="$TEXT" \
+    drawing=off \
+    update_freq=5 \
+    popup.align=right \
+    popup.horizontal=on \
+    script="$PLUGIN_DIR/media.sh" \
+    click_script="sketchybar --set media popup.drawing=toggle" \
+  --subscribe media media_change routine
+
+ sketchybar --add item media.prev popup.media \
+  --set media.prev icon="󰒮" icon.font="JetBrainsMono Nerd Font Mono:Regular:14.0" label.drawing=off icon.color="$SUBTEXT" padding_left=12 padding_right=4 \
+    click_script="osascript -e 'tell application \"Spotify\" to previous track'"
+ sketchybar --add item media.play popup.media \
+  --set media.play icon="󰐊" icon.font="JetBrainsMono Nerd Font Mono:Regular:14.0" label.drawing=off icon.color="$TEXT" padding_left=8 padding_right=8 \
+    click_script="osascript -e 'tell application \"Spotify\" to playpause'"
+ sketchybar --add item media.next popup.media \
+  --set media.next icon="󰒭" icon.font="JetBrainsMono Nerd Font Mono:Regular:14.0" label.drawing=off icon.color="$SUBTEXT" padding_left=4 padding_right=12 \
+    click_script="osascript -e 'tell application \"Spotify\" to next track'"
+
+# One background pill for the complete right cluster.
+sketchybar --add bracket right_group media sep_media_wifi wifi sep_wifi_battery battery sep_battery_cpu cpu ram sep_calendar_cpu calendar
+sketchybar --set right_group \
+  background.drawing=on \
+  background.color="$PILL_BG" \
+  background.height=28 \
+  background.corner_radius=14 \
+  background.padding_left=14 \
+  background.padding_right=14
+
+# --- Trigger initial updates ------------------------------------------------
 sketchybar --trigger forced
 NAME=front_app "$PLUGIN_DIR/front_app.sh"
-NAME=volume_icon "$PLUGIN_DIR/volume.sh"
 NAME=calendar "$PLUGIN_DIR/calendar.sh"
 NAME=battery "$PLUGIN_DIR/battery.sh"
+NAME=cpu "$PLUGIN_DIR/system.sh"
+NAME=ram "$PLUGIN_DIR/system.sh"
+NAME=wifi "$PLUGIN_DIR/wifi.sh"
+NAME=media "$PLUGIN_DIR/media.sh"
+
+# Update all workspace items
+if [ -x "$AEROSPACE" ]; then
+  for ws in $("$AEROSPACE" list-workspaces --all); do
+    [ -n "$ws" ] || continue
+    NAME="space.$ws" FOCUSED_WORKSPACE="$("$AEROSPACE" list-workspaces --focused 2>/dev/null)" \
+      "$PLUGIN_DIR/aerospace_workspace.sh" "$ws"
+  done
+fi

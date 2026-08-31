@@ -45,6 +45,7 @@ PACKAGES=(
     "zsh"
     "git" 
     "tmux"
+    "herdr"
     "starship"
     "nvim"
     "aerospace"

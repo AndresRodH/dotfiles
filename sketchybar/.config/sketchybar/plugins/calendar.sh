@@ -1,3 +1,8 @@
 #!/usr/bin/env sh
 
-sketchybar --set "$NAME" icon="$(date '+%a %m/%d')" label="$(date '+%H:%M')"
+if [ "$SENDER" = "appearance_change" ]; then
+  sketchybar --reload
+  exit 0
+fi
+
+sketchybar --set "$NAME" icon="󰃶" label="$(date '+%a %d %b %H:%M')"

@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --paging=never --features $(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo catppuccin-mocha || echo catppuccin-latte)
+      command: delta --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --paging=never --features $(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo catppuccin-mocha || echo catppuccin-latte)

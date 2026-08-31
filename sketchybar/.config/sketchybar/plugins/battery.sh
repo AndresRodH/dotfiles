@@ -1,27 +1,27 @@
 #!/usr/bin/env sh
 
 batt_info="$(pmset -g batt)"
-charge="$(printf '%s\n' "$batt_info" | /usr/bin/grep -Eo '[0-9]+%' | /usr/bin/head -n 1 | /usr/bin/tr -d '%')"
-icon="!"
-white=0xffcad3f5
-green=0xffa6da95
-red=0xffed8796
-color="$white"
+charge="$(printf '%s\n' "$batt_info" | grep -Eo '[0-9]+%' | head -n 1 | tr -d '%')"
 
-if printf '%s\n' "$batt_info" | /usr/bin/grep -q "AC Power"; then
-  icon="􀢋"
-  color="$green"
-elif [ -n "$charge" ] && [ "$charge" -gt 80 ]; then
-  icon="􀛨"
-elif [ -n "$charge" ] && [ "$charge" -gt 60 ]; then
-  icon="􀺸"
-elif [ -n "$charge" ] && [ "$charge" -gt 40 ]; then
-  icon="􀺶"
-elif [ -n "$charge" ] && [ "$charge" -gt 20 ]; then
-  icon="􀛩"
+if [ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" = "Dark" ]; then
+  TEXT_COLOR=0xffcdd6f4
+  CHARGED_COLOR=0xffa6e3a1
+  LOW_COLOR=0xfff38ba8
 else
-  icon="􀛪"
-  color="$red"
+  TEXT_COLOR=0xff4c4f69
+  CHARGED_COLOR=0xff40a02b
+  LOW_COLOR=0xffd20f39
+fi
+
+if printf '%s\n' "$batt_info" | grep -q "AC Power"; then
+  icon="󰂄"
+  color="$CHARGED_COLOR"
+elif [ -n "$charge" ] && [ "$charge" -gt 20 ]; then
+  icon="󰁹"
+  color="$TEXT_COLOR"
+else
+  icon="󰂎"
+  color="$LOW_COLOR"
 fi
 
 sketchybar --set "$NAME" icon="$icon" icon.color="$color" label="${charge:-?}%"
